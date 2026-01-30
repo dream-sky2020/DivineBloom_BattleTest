@@ -7,41 +7,41 @@ import { ConditionSchema } from './condition';
  * 修改为严格的二叉树结构，并增加常数布尔叶子
  */
 export const TriggerNodeSchema: z.ZodType<any> = z.lazy(() => z.union([
-  // --- 叶子节点：判定条件 ---
+  // --- 基础叶子节点：判定条件 ---
   z.object({
     type: z.literal('CONDITION'),
     condition: ConditionSchema,
   }),
-
-  // --- 叶子节点：常量真 ---
+  // --- 一元逻辑节点：非 (NOT) ---
+  z.object({
+    type: z.literal('NOT'),
+    child: TriggerNodeSchema,
+  }),
+  // --- 常量叶子节点：真 ---
   z.object({
     type: z.literal('TRUE'),
   }),
 
-  // --- 叶子节点：常量假 ---
+  // --- 常量叶子节点：假 ---
   z.object({
     type: z.literal('FALSE'),
   }),
 
-  // --- 逻辑节点：与 (AND) - 严格两个子节点 ---
+  // --- 二元逻辑节点：与 (AND) ---
   z.object({
     type: z.literal('AND'),
     left: TriggerNodeSchema,
     right: TriggerNodeSchema,
   }),
 
-  // --- 逻辑节点：或 (OR) - 严格两个子节点 ---
+  // --- 二元逻辑节点：或 (OR) ---
   z.object({
     type: z.literal('OR'),
     left: TriggerNodeSchema,
     right: TriggerNodeSchema,
   }),
 
-  // --- 逻辑节点：非 (NOT) - 单个子节点 ---
-  z.object({
-    type: z.literal('NOT'),
-    child: TriggerNodeSchema,
-  })
+
 ]));
 
 /**

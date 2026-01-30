@@ -15,3 +15,12 @@ export const StatsSchema = z.object({
 }).catchall(z.number());
 
 export type Stats = z.infer<typeof StatsSchema>;
+
+export const EntityReferenceSchema = z.object({
+  uuid: ID,
+  type: z.string(),
+  name: z.string().optional(),
+  tags: z.array(z.string()).optional().default([]),
+});
+
+export type EntityReference = z.infer<typeof EntityReferenceSchema>;
